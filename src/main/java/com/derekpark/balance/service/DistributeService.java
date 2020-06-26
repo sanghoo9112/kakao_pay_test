@@ -20,7 +20,6 @@ public class DistributeService {
     private static final ZoneId DISTRIBUTE_ZONE_ID = ZoneId.of("Asia/Seoul");
     private final DistributeRepository distributeRepository;
 
-
     DistributeService(DistributeRepository distributeRepository) {
         this.distributeRepository = distributeRepository;
     }
@@ -43,7 +42,6 @@ public class DistributeService {
         distribute.setUserId(userId);
         distributeStrategy.distribute(distribute);
         distribute = distributeRepository.save(distribute);
-
         return distribute;
     }
 
@@ -59,7 +57,7 @@ public class DistributeService {
         return true;
     }
 
-
+    @Transactional
     public Distribute getDistribute(Integer requestUserId, Integer distributeId)
             throws DistributeException, DataNotFoundException, ExpiredPeriodException {
 
@@ -89,5 +87,14 @@ public class DistributeService {
         LocalDateTime localDateTime = LocalDateTime.now(DISTRIBUTE_ZONE_ID);
         return regDate.isBefore(localDateTime.minusDays(VALIDATE_DAY));
 
+    }
+
+    @Transactional
+    public Distribute updateDistribute(Integer requestUserId, int distributeId)
+            throws DistributeException, DataNotFoundException {
+
+
+        Distribute distribute = distributeRepository.findByIdWithRocking(distributeId)
+        return null;
     }
 }
