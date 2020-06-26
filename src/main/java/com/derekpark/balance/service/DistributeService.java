@@ -1,6 +1,7 @@
 package com.derekpark.balance.service;
 
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import com.derekpark.balance.exception.DistributeException;
 import com.derekpark.balance.exception.ExpiredPeriodException;
@@ -76,6 +77,16 @@ public class DistributeService {
             throw new ExpiredPeriodException("만료된 기간입니다");
         }
 
+        return distribute;
+
+
+    }
+
+
+    private boolean isExpiredDate(LocalDateTime regDate) {
+
+        LocalDateTime localDateTime = LocalDateTime.now(DISTRIBUTE_ZONE_ID);
+        return regDate.isBefore(localDateTime.minusDays(VALIDATE_DAY));
 
     }
 }

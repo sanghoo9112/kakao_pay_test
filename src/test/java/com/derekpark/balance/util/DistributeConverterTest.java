@@ -1,6 +1,7 @@
-package com.derekpark.balance.repository;
+package com.derekpark.balance.util;
 
-
+import java.time.LocalDateTime;
+import com.derekpark.balance.dto.DistributeDTO;
 import com.derekpark.balance.model.Distribute;
 import com.derekpark.balance.model.Recipient;
 import org.junit.Assert;
@@ -10,22 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DistributeRepositoryTest {
+public class DistributeConverterTest {
 
     @Autowired
-    private DistributeRepository distributeRepository;
+    private DistributeConverter distributeConverter;
 
 
     @Test
-    public void distribute_save_test() {
+    public void convert_test() {
 
         //given
         Distribute distribute = new Distribute();
+        distribute.setId(1);
         distribute.setAmount(1000);
         distribute.setRoomId("a");
         distribute.setUserId(948824);
+        distribute.setRegDate(LocalDateTime.now());
 
         Recipient recipient1 = new Recipient();
         recipient1.setAmount(200);
@@ -34,16 +38,14 @@ public class DistributeRepositoryTest {
 
         Recipient recipient2 = new Recipient();
         recipient2.setAmount(800);
-        recipient2.setUserId(2);
         distribute.addRecipients(recipient2);
 
         // when
-        Distribute result = distributeRepository.save(distribute);
+        DistributeDTO distributeDTO = distributeConverter.convert(distribute);
 
         // then
-        Assert.assertEquals(result.getId(), distribute.getId());
-        Assert.assertEquals(result.getRecipients().size(), distribute.getRecipients().size());
+        Assert.assertEquals(distributeDTO.getAmountReceive(), 200);
+
+
     }
-
-
 }

@@ -65,7 +65,7 @@ public class DistributeController {
 
 
     @GetMapping(value = "/distribute/{token}")
-    public ResponseEntity<DistributeResponse> getDistribute(
+    public ResponseEntity<DistributeResponse<DistributeDTO>> getDistribute(
             @RequestHeader(value = "X-ROOM-ID") String roomId,
             @RequestHeader(value = "X-USER-ID") Integer requestUserId,
             @PathVariable("token") String token) throws DistributeException {
