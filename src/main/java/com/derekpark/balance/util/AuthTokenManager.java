@@ -22,7 +22,7 @@ public class AuthTokenManager {
 
         if(id > CHAR_MAX_VALUE) {
             int upperNum = id / CHAR_MAX_VALUE;
-            int downNum = id / CHAR_MAX_VALUE;
+            int downNum = id % CHAR_MAX_VALUE;
             token = Character.toString(upperNum) + Character.toString(downNum);
         } else {
             token = Character.toString(id);
@@ -34,7 +34,15 @@ public class AuthTokenManager {
 
     public int getTokenIndex(String token) {
 
+        int value = 0;
         String decodeToken = tokenSecurityConverter.decode(token);
+        if(decodeToken.length() == 2) {
+            value = (int) decodeToken.charAt(0) * CHAR_MAX_VALUE + (int) decodeToken.charAt(1);
+        } else if(decodeToken.length() == 1) {
+            value = decodeToken.charAt(0);
+        }
+
+        return value;
     }
 
 }
