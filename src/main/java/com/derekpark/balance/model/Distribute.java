@@ -1,9 +1,7 @@
 package com.derekpark.balance.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +16,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "distribute")
-class Distribute {
+public class Distribute {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,11 +35,75 @@ class Distribute {
     @Column(name = "amount_received")
     private Integer amountReceived;
 
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "distribute", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Recipient> recipients = new HashSet<>();
 
     @CreationTimestamp
     @Column(name = "reg_date")
     private LocalDateTime regDate;
 
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
+    public void addRecipients(Recipient recipient) {
+        this.recipients.add(recipient);
+    }
+
+
+    public Long getRoomId() {
+        return roomId;
+    }
+
+
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
+    }
+
+
+    public Long getUserId() {
+        return userId;
+    }
+
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+
+    public Integer getAmountReceived() {
+        return amountReceived;
+    }
+
+
+    public void setAmountReceived(Integer amountReceived) {
+        this.amountReceived = amountReceived;
+    }
+
+
+    public Set<Recipient> getRecipients() {
+        return recipients;
+    }
+
+
+    public void setRecipients(Set<Recipient> recipients) {
+        this.recipients = recipients;
+    }
 }
