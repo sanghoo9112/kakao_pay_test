@@ -7,6 +7,7 @@ import com.derekpark.balance.exception.DataNotFoundException;
 import com.derekpark.balance.exception.DistributeException;
 import com.derekpark.balance.exception.ExpiredPeriodException;
 import com.derekpark.balance.model.Distribute;
+import com.derekpark.balance.model.Recipient;
 import com.derekpark.balance.repository.DistributeRepository;
 import com.derekpark.balance.util.Distributable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DistributeService {
 
     private static final int VALIDATE_DAY = 7;
+    private static final int VALIDATE_MINUTE = 10;
     private static final ZoneId DISTRIBUTE_ZONE_ID = ZoneId.of("Asia/Seoul");
     private final DistributeRepository distributeRepository;
 
@@ -89,12 +91,62 @@ public class DistributeService {
 
     }
 
+
     @Transactional
-    public Distribute updateDistribute(Integer requestUserId, int distributeId)
-            throws DistributeException, DataNotFoundException {
+    public int updateDistribute(Integer requestUserId, String roomId, int distributeId)
+            throws DistributeException, DataNotFoundException, ExpiredPeriodException {
+
+        if(!isValidateUser(requestUserId)) {
+            throw new DistributeException("invalid user");
+        }
+
+        Distribute distribute = distributeRepository.findByIdWithRocking(distributeId);
+
+        if(distribute == null) {
+            throw new DataNotFoundException("해당 뿌리기가 존재하지 않습니다.");
+        }
+
+        if(distribute.getUserId().equals(requestUserId)) {
+            throw new DistributeException("자신이 뿌리기한 건은 자신이 받을 수 없습니다.");
+        }
+
+        if(!distribute.getRoomId().equals(roomId)) {
+            throw new DistributeException("뿌린기가 호출된 대화방과 동일한 대화방에 속한 사용자만이 받을 수 있습니다.");
+        }
+
+        if(!isValidatePeriod(distribute.getRegDate())) {
+            throw new ExpiredPeriodException("뿌린 건은 10분간만 유효합니다.");
+        }
+
+        if(isAlreadyReceivedUser(distribute, requestUserId)) {
+            throw new DistributeException("이미 참여하셨습니다.");
+        }
+
+        Recipient recipient =
+                distribute.getRecipients().stream().filter(x -> x.getUserId() == null).findAny()
+                        .orElseThrow(() -> new DataNotFoundException("모두 가져갔습니다. 아쉽지만 다음 기회에"));
+
+        recipient.setUserId(requestUserId);
+        return recipient.getAmount();
+
+    }
 
 
-        Distribute distribute = distributeRepository.findByIdWithRocking(distributeId)
-        return null;
+    private boolean isAlreadyReceivedUser(Distribute distribute, Integer requestUserId) {
+
+        for(Recipient recipient : distribute.getRecipients()) {
+            if(recipient.getUserId() != null
+                    && recipient.getUserId().compareTo(requestUserId) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private boolean isValidatePeriod(LocalDateTime regDate) {
+
+        LocalDateTime localDateTime = LocalDateTime.now(DISTRIBUTE_ZONE_ID);
+        return !regDate.isBefore(localDateTime.plusMinutes(VALIDATE_MINUTE));
     }
 }

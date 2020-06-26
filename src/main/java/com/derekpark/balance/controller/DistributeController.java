@@ -66,7 +66,8 @@ public class DistributeController {
 
 
     @PutMapping(value = "/distribute/{token}")
-    public ResponseEntity<DistributeResponse<DistributeDTO>> updateDistribute(
+    public ResponseEntity<DistributeResponse<Integer>> updateDistribute(
+            @RequestHeader(value = "X-ROOM-ID") String roomId,
             @RequestHeader(value = "X-USER-ID") Integer requestUserId,
             @PathVariable("token") String token) throws DistributeException {
 
@@ -78,19 +79,15 @@ public class DistributeController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        DistributeDTO distributeDTO;
-
         try {
-            Distribute distribute = distributeService.updateDistribute(requestUserId, distributeId);
-            distributeDTO = distributeConverter.convert(distribute);
-            DistributeResponse<DistributeDTO> distributeResponse = new DistributeResponse<>();
-            distributeResponse.setMessage(DISTRIBUTE_SUCCESS);
-            distributeResponse.setBody(distributeDTO);
+            int amount = distributeService.updateDistribute(requestUserId, roomId, distributeId);
+            DistributeResponse<Integer> distributeResponse = new DistributeResponse<>();
+            distributeResponse.setBody(amount);
             return ResponseEntity.ok(distributeResponse);
 
-        } catch(DataNotFoundException e) {
+        } catch(DataNotFoundException | ExpiredPeriodException e) {
 
-            DistributeResponse<DistributeDTO> distributeResponse = new DistributeResponse<>();
+            DistributeResponse<Integer> distributeResponse = new DistributeResponse<>();
             distributeResponse.setCode(DISTRIBUTE_ERROR);
             distributeResponse.setMessage(e.getMessage());
             return ResponseEntity.ok(distributeResponse);
