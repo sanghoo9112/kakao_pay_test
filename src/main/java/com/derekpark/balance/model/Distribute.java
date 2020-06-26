@@ -106,4 +106,14 @@ public class Distribute {
     public void setRecipients(Set<Recipient> recipients) {
         this.recipients = recipients;
     }
+
+
+    public LocalDateTime getRegDate() {
+        return regDate;
+    }
+
+
+    public void setRegDate(LocalDateTime regDate) {
+        this.regDate = regDate;
+    }
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface DistributeRepository extends JpaRepository<Distribute, Long> {
+public interface DistributeRepository extends JpaRepository<Distribute, Integer> {
 
 }

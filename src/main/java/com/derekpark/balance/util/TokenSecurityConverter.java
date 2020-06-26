@@ -1,5 +1,6 @@
 package com.derekpark.balance.util;
 
+import com.derekpark.balance.exception.InvalidToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,8 @@ public class TokenSecurityConverter {
     }
 
 
-    public String decode(String token) {
+    public String decode(String token) throws InvalidToken {
+        // decode
         return token;
     }
 }
