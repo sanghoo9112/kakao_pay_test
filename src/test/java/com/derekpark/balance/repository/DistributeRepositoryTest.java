@@ -24,7 +24,7 @@ public class DistributeRepositoryTest {
         //given
         Distribute distribute = new Distribute();
         distribute.setAmount(1000);
-        distribute.setRoomId(2L);
+        distribute.setRoomId("a");
         distribute.setUserId(948824L);
 
         Recipient recipient1 = new Recipient();

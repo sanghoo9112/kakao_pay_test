@@ -24,7 +24,7 @@ public class Distribute {
     private Long id;
 
     @Column(name = "room_id")
-    private Long roomId;
+    private String roomId;
 
     @Column(name = "user_id")
     private Long userId;
@@ -58,12 +58,12 @@ public class Distribute {
     }
 
 
-    public Long getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 
