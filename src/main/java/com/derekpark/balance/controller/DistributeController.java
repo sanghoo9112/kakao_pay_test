@@ -1,9 +1,9 @@
 package com.derekpark.balance.controller;
 
 import com.derekpark.balance.exception.DistributeException;
-import com.derekpark.balance.model.AuthToken;
 import com.derekpark.balance.model.Distribute;
 import com.derekpark.balance.service.DistributeService;
+import com.derekpark.balance.util.AuthTokenManager;
 import com.derekpark.balance.util.Distributable;
 import com.derekpark.balance.util.RandomDistributeStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +18,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class DistributeController {
 
     private final DistributeService distributeService;
+    private final AuthTokenManager autoTokenManager;
 
 
     @Autowired
-    DistributeController(DistributeService distributeService) {
+    public DistributeController(DistributeService distributeService,
+            AuthTokenManager autoTokenManager) {
         this.distributeService = distributeService;
+        this.autoTokenManager = autoTokenManager;
     }
 
 
     @PostMapping(value = "/distribute")
-    public ResponseEntity<AuthToken> create(@RequestHeader(value = "X-ROOM-ID") String roomId,
+    public ResponseEntity<String> create(@RequestHeader(value = "X-ROOM-ID") String roomId,
             @RequestHeader(value = "X-USER-ID") Long userId) throws DistributeException {
 
         Distributable distributeStrategy = new RandomDistributeStrategy();
 
         Distribute distribute = distributeService.create(roomId, userId, distributeStrategy);
 
-        AuthToken authToken = AuthTokenGenerator.generate(distribute.getId());
+        String authToken = autoTokenManager.generate(distribute.getId());
 
         return ResponseEntity.ok(authToken);
 

@@ -16,13 +16,13 @@ public class Recipient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "amount")
     private Integer amount;
 
     @Column(name = "user_id")
-    private Long userId;
+    private Integer userId;
 
     @ManyToOne
     @JoinColumn(name = "distribute_id")
@@ -39,12 +39,12 @@ public class Recipient {
     }
 
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 }

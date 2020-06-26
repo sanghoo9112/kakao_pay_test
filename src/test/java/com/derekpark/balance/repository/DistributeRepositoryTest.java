@@ -25,16 +25,16 @@ public class DistributeRepositoryTest {
         Distribute distribute = new Distribute();
         distribute.setAmount(1000);
         distribute.setRoomId("a");
-        distribute.setUserId(948824L);
+        distribute.setUserId(948824);
 
         Recipient recipient1 = new Recipient();
         recipient1.setAmount(200);
-        recipient1.setUserId(1L);
+        recipient1.setUserId(1);
         distribute.addRecipients(recipient1);
 
         Recipient recipient2 = new Recipient();
         recipient2.setAmount(800);
-        recipient2.setUserId(2L);
+        recipient2.setUserId(2);
         distribute.addRecipients(recipient2);
 
         // when

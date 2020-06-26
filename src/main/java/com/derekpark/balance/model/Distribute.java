@@ -21,13 +21,13 @@ public class Distribute {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private Long id;
+    private Integer id;
 
     @Column(name = "room_id")
     private String roomId;
 
     @Column(name = "user_id")
-    private Long userId;
+    private Integer userId;
 
     @Column(name = "amount")
     private Integer amount;
@@ -43,12 +43,12 @@ public class Distribute {
     private LocalDateTime regDate;
 
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -68,12 +68,12 @@ public class Distribute {
     }
 
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
