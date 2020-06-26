@@ -1,4 +1,4 @@
-package com.derekpark.balance.service;
+package com.derekpark.balance.exception;
 
 public class DataNotFoundException extends Exception {
 

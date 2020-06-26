@@ -1,6 +1,7 @@
 package com.derekpark.balance.service;
 
 import com.derekpark.balance.dto.DistributeDTO;
+import com.derekpark.balance.exception.DataNotFoundException;
 import com.derekpark.balance.exception.DistributeException;
 import com.derekpark.balance.exception.ExpiredPeriodException;
 import com.derekpark.balance.model.Distribute;

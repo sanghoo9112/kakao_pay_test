@@ -2,11 +2,11 @@ package com.derekpark.balance.controller;
 
 import com.derekpark.balance.dto.DistributeDTO;
 import com.derekpark.balance.dto.DistributeResponse;
+import com.derekpark.balance.exception.DataNotFoundException;
 import com.derekpark.balance.exception.DistributeException;
 import com.derekpark.balance.exception.ExpiredPeriodException;
 import com.derekpark.balance.exception.InvalidToken;
 import com.derekpark.balance.model.Distribute;
-import com.derekpark.balance.service.DataNotFoundException;
 import com.derekpark.balance.service.DistributeService;
 import com.derekpark.balance.util.AuthTokenManager;
 import com.derekpark.balance.util.Distributable;
