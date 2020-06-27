@@ -35,7 +35,7 @@ public class AuthTokenManager {
     public int getTokenIndex(String token) {
 
         int value = 0;
-        String decodeToken = tokenSecurityConverter.decode(token);
+        String decodeToken = tokenSecurityConverter.decrypt(token);
         if(decodeToken.length() == 2) {
             value = (int) decodeToken.charAt(0) * CHAR_MAX_VALUE + (int) decodeToken.charAt(1);
         } else if(decodeToken.length() == 1) {
