@@ -2,6 +2,7 @@ package com.derekpark.balance.controller;
 
 import com.derekpark.balance.dto.DistributeDTO;
 import com.derekpark.balance.dto.DistributeResponse;
+import com.derekpark.balance.dto.ResponseCode;
 import com.derekpark.balance.exception.DataNotFoundException;
 import com.derekpark.balance.exception.DistributeException;
 import com.derekpark.balance.exception.ExpiredPeriodException;
@@ -28,8 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/pay")
 public class DistributeController {
 
-    private static final String DISTRIBUTE_ERROR = "10";
-    private static final String DISTRIBUTE_SUCCESS = "00";
+
     private final DistributeService distributeService;
     private final AuthTokenManager autoTokenManager;
     private final DistributeConverter distributeConverter;
@@ -57,7 +57,7 @@ public class DistributeController {
         String authToken = autoTokenManager.generate(distribute.getId());
 
         DistributeResponse<String> response = new DistributeResponse<>();
-        response.setCode(DISTRIBUTE_SUCCESS);
+        response.setCode(ResponseCode.SUCCESS.getCode());
         response.setBody(authToken);
 
         return ResponseEntity.ok(response);
@@ -82,14 +82,14 @@ public class DistributeController {
         try {
             int amount = distributeService.updateDistribute(requestUserId, roomId, distributeId);
             DistributeResponse<Integer> distributeResponse = new DistributeResponse<>();
-            distributeResponse.setCode(DISTRIBUTE_SUCCESS);
+            distributeResponse.setCode(ResponseCode.SUCCESS.getCode());
             distributeResponse.setBody(amount);
             return ResponseEntity.ok(distributeResponse);
 
         } catch(DataNotFoundException | ExpiredPeriodException | DistributeException e) {
 
             DistributeResponse<Integer> distributeResponse = new DistributeResponse<>();
-            distributeResponse.setCode(DISTRIBUTE_ERROR);
+            distributeResponse.setCode(ResponseCode.FAIL.getCode());
             distributeResponse.setMessage(e.getMessage());
             return ResponseEntity.ok(distributeResponse);
 
@@ -117,14 +117,14 @@ public class DistributeController {
             Distribute distribute = distributeService.getDistribute(requestUserId, distributeId);
             distributeDTO = distributeConverter.convert(distribute);
             DistributeResponse<DistributeDTO> distributeResponse = new DistributeResponse<>();
-            distributeResponse.setCode(DISTRIBUTE_SUCCESS);
+            distributeResponse.setCode(ResponseCode.SUCCESS.getCode());
             distributeResponse.setBody(distributeDTO);
             return ResponseEntity.ok(distributeResponse);
 
         } catch(DataNotFoundException | ExpiredPeriodException | DistributeException e) {
 
             DistributeResponse<DistributeDTO> distributeResponse = new DistributeResponse<>();
-            distributeResponse.setCode(DISTRIBUTE_ERROR);
+            distributeResponse.setCode(ResponseCode.FAIL.getCode());
             distributeResponse.setMessage(e.getMessage());
             return ResponseEntity.ok(distributeResponse);
 
