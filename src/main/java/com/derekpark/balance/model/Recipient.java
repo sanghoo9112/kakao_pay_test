@@ -47,4 +47,9 @@ public class Recipient {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
+
+
+    public void setDistribute(Distribute distribute) {
+        this.distribute = distribute;
+    }
 }

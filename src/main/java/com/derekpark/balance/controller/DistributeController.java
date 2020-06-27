@@ -69,7 +69,7 @@ public class DistributeController {
     public ResponseEntity<DistributeResponse<Integer>> updateDistribute(
             @RequestHeader(value = "X-ROOM-ID") String roomId,
             @RequestHeader(value = "X-USER-ID") Integer requestUserId,
-            @PathVariable("token") String token) throws DistributeException {
+            @PathVariable("token") String token) {
 
         int distributeId;
 
@@ -82,10 +82,11 @@ public class DistributeController {
         try {
             int amount = distributeService.updateDistribute(requestUserId, roomId, distributeId);
             DistributeResponse<Integer> distributeResponse = new DistributeResponse<>();
+            distributeResponse.setCode(DISTRIBUTE_SUCCESS);
             distributeResponse.setBody(amount);
             return ResponseEntity.ok(distributeResponse);
 
-        } catch(DataNotFoundException | ExpiredPeriodException e) {
+        } catch(DataNotFoundException | ExpiredPeriodException | DistributeException e) {
 
             DistributeResponse<Integer> distributeResponse = new DistributeResponse<>();
             distributeResponse.setCode(DISTRIBUTE_ERROR);
@@ -100,7 +101,7 @@ public class DistributeController {
     @GetMapping(value = "/distribute/{token}")
     public ResponseEntity<DistributeResponse<DistributeDTO>> getDistribute(
             @RequestHeader(value = "X-USER-ID") Integer requestUserId,
-            @PathVariable("token") String token) throws DistributeException {
+            @PathVariable("token") String token) {
 
         int distributeId;
 
@@ -120,7 +121,7 @@ public class DistributeController {
             distributeResponse.setBody(distributeDTO);
             return ResponseEntity.ok(distributeResponse);
 
-        } catch(DataNotFoundException | ExpiredPeriodException e) {
+        } catch(DataNotFoundException | ExpiredPeriodException | DistributeException e) {
 
             DistributeResponse<DistributeDTO> distributeResponse = new DistributeResponse<>();
             distributeResponse.setCode(DISTRIBUTE_ERROR);

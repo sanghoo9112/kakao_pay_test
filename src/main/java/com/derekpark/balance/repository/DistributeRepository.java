@@ -15,6 +15,6 @@ public interface DistributeRepository extends JpaRepository<Distribute, Integer>
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "10000")})
-    @Query("SELECT distribute FROM Distribute distribute WHERE distribute.id = ?1")
+    @Query("SELECT distribute FROM Distribute distribute join fetch distribute.recipients WHERE distribute.id = ?1")
     Distribute findByIdWithRocking(int distributeId);
 }

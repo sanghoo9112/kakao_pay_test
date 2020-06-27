@@ -147,6 +147,6 @@ public class DistributeService {
     private boolean isValidatePeriod(LocalDateTime regDate) {
 
         LocalDateTime localDateTime = LocalDateTime.now(DISTRIBUTE_ZONE_ID);
-        return !regDate.isBefore(localDateTime.plusMinutes(VALIDATE_MINUTE));
+        return !regDate.isBefore(localDateTime.minusMinutes(VALIDATE_MINUTE));
     }
 }

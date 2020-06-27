@@ -32,9 +32,6 @@ public class Distribute {
     @Column(name = "amount")
     private Integer amount;
 
-    @Column(name = "remain_count")
-    private Integer remainCount;
-
     @OneToMany(mappedBy = "distribute", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Recipient> recipients = new HashSet<>();
 
@@ -55,6 +52,7 @@ public class Distribute {
 
     public void addRecipients(Recipient recipient) {
         this.recipients.add(recipient);
+        recipient.setDistribute(this);
     }
 
 
