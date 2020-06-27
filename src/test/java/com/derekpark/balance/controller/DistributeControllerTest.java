@@ -5,6 +5,7 @@ import com.derekpark.balance.dto.DistributeDTO;
 import com.derekpark.balance.model.Distribute;
 import com.derekpark.balance.model.Recipient;
 import com.derekpark.balance.service.DistributeService;
+import com.derekpark.balance.util.AuthTokenManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,9 @@ public class DistributeControllerTest {
 
     @MockBean(name = "distributeService")
     private DistributeService distributeService;
+
+    @MockBean(name = "authTokenManager")
+    private AuthTokenManager authTokenManager;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -85,6 +89,8 @@ public class DistributeControllerTest {
                 distributeService.getDistribute(ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(distribute);
 
+        Mockito.when(authTokenManager.getTokenIndex(ArgumentMatchers.any())).thenReturn(1);
+
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/pay/distribute/asd")
                 .header("X-ROOM-ID", "secret_room").header("X-USER-ID", 948824))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -97,6 +103,8 @@ public class DistributeControllerTest {
         Mockito.when(distributeService
                 .updateDistribute(ArgumentMatchers.any(), ArgumentMatchers.any(),
                         ArgumentMatchers.any())).thenReturn(12000);
+
+        Mockito.when(authTokenManager.getTokenIndex(ArgumentMatchers.any())).thenReturn(1);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/v1/pay/distribute/asd")
                 .header("X-ROOM-ID", "secret_room").header("X-USER-ID", 948824))

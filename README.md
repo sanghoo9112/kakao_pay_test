@@ -14,7 +14,9 @@
     - H2
     - Gradle
     - Junit4
-
+    
+- 주의사항
+    - testCode 실행시 intelliJ gradle runtest using intelliJ user IDEA 사용
 
 ## API-명세
 ### 1. 뿌리기 API

@@ -134,7 +134,7 @@ public class DistributeServiceTest {
 
 
     @Transactional
-    @Test(expected = DistributeException.class)
+    @Test(expected = DataNotFoundException.class)
     public void distribute_put_test_soldOut()
             throws DistributeException, ExpiredPeriodException, DataNotFoundException {
 
