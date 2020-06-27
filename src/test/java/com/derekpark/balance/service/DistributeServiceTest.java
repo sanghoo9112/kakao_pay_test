@@ -74,6 +74,25 @@ public class DistributeServiceTest {
     }
 
 
+    @Transactional
+    @Test
+    public void distribute_put_test()
+            throws DistributeException, ExpiredPeriodException, DataNotFoundException {
+
+        // when
+        Distribute distribute = distributeService.create("secret_room", 948824, distributeStrategy);
+        int result1 = distributeService.updateDistribute(2, "secret_room", distribute.getId());
+        int result2 = distributeService.updateDistribute(3, "secret_room", distribute.getId());
+        int result3 = distributeService.updateDistribute(4, "secret_room", distribute.getId());
+        int totalAmount = distributeDTO.getAmount();
+
+        // then
+        Assert.assertEquals(totalAmount, result1 + result2 + result3);
+
+
+    }
+
+
     @Test(expected = DistributeException.class)
     public void distribute_get_test_invalidUser()
             throws ExpiredPeriodException, DataNotFoundException, DistributeException {
@@ -96,15 +115,27 @@ public class DistributeServiceTest {
         // when
         Distribute distribute = distributeService.create("secret_room", 948824, distributeStrategy);
         int result1 = distributeService.updateDistribute(2, "secret_room2", distribute.getId());
-        int totalAmount = distributeDTO.getAmount();
 
 
     }
 
 
     @Transactional
-    @Test
-    public void distribute_put_test()
+    @Test(expected = DistributeException.class)
+    public void distribute_put_test_isAlreadyReceive()
+            throws DistributeException, ExpiredPeriodException, DataNotFoundException {
+
+        // when
+        Distribute distribute = distributeService.create("secret_room", 948824, distributeStrategy);
+        int result1 = distributeService.updateDistribute(2, "secret_room", distribute.getId());
+        int result = distributeService.updateDistribute(2, "secret_room", distribute.getId());
+
+    }
+
+
+    @Transactional
+    @Test(expected = DistributeException.class)
+    public void distribute_put_test_soldOut()
             throws DistributeException, ExpiredPeriodException, DataNotFoundException {
 
         // when
@@ -112,12 +143,9 @@ public class DistributeServiceTest {
         int result1 = distributeService.updateDistribute(2, "secret_room", distribute.getId());
         int result2 = distributeService.updateDistribute(3, "secret_room", distribute.getId());
         int result3 = distributeService.updateDistribute(4, "secret_room", distribute.getId());
-        int totalAmount = distributeDTO.getAmount();
-
-        // then
-        Assert.assertEquals(totalAmount, result1 + result2 + result3);
-
+        int result4 = distributeService.updateDistribute(5, "secret_room", distribute.getId());
 
     }
+
 
 }

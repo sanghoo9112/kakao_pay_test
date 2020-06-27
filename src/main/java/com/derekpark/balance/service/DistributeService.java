@@ -93,7 +93,7 @@ public class DistributeService {
 
 
     @Transactional
-    public int updateDistribute(Integer requestUserId, String roomId, int distributeId)
+    public int updateDistribute(Integer requestUserId, String roomId, Integer distributeId)
             throws DistributeException, DataNotFoundException, ExpiredPeriodException {
 
         if(!isValidateUser(requestUserId)) {
@@ -127,6 +127,7 @@ public class DistributeService {
                         .orElseThrow(() -> new DataNotFoundException("모두 가져갔습니다. 아쉽지만 다음 기회에"));
 
         recipient.setUserId(requestUserId);
+
         return recipient.getAmount();
 
     }
