@@ -117,7 +117,7 @@ public class DistributeController {
             Distribute distribute = distributeService.getDistribute(requestUserId, distributeId);
             distributeDTO = distributeConverter.convert(distribute);
             DistributeResponse<DistributeDTO> distributeResponse = new DistributeResponse<>();
-            distributeResponse.setMessage(DISTRIBUTE_SUCCESS);
+            distributeResponse.setCode(DISTRIBUTE_SUCCESS);
             distributeResponse.setBody(distributeDTO);
             return ResponseEntity.ok(distributeResponse);
 
